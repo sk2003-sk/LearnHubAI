@@ -1,0 +1,7 @@
+import { AlertTriangle, X } from "lucide-react";
+import Button from "../ui/Button";
+
+export default function ConfirmDialog({ open, title = "Are you sure?", description, confirmText = "Confirm", cancelText = "Cancel", onConfirm, onClose, isLoading = false, variant = "danger" }) {
+  if (!open) return null;
+  return <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 p-4" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget && !isLoading) onClose?.(); }}><section role="alertdialog" aria-modal="true" aria-labelledby="confirm-dialog-title" className="w-full max-w-md rounded-2xl border border-border bg-surface p-6 shadow-2xl  "><div className="flex items-start justify-between gap-4"><span className="flex size-11 items-center justify-center rounded-xl bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-300"><AlertTriangle size={21} /></span><button type="button" onClick={onClose} disabled={isLoading} className="rounded-lg p-2 text-foreground-secondary hover:bg-surface-secondary " aria-label="Close"><X size={18} /></button></div><h2 id="confirm-dialog-title" className="mt-4 text-lg font-semibold text-foreground ">{title}</h2>{description && <p className="mt-2 text-sm leading-6 text-foreground-secondary ">{description}</p>}<div className="mt-6 flex justify-end gap-3"><Button variant="outline" onClick={onClose} disabled={isLoading}>{cancelText}</Button><Button variant={variant} onClick={onConfirm} loading={isLoading}>{confirmText}</Button></div></section></div>;
+}

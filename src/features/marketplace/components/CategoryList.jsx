@@ -1,0 +1,3 @@
+export default function CategoryList({ categories = [], selected, onSelect }) {
+  return <div className="flex flex-wrap gap-2">{categories.map((category, index) => { const name = typeof category === "string" ? category : category.name ?? category.title ?? `Category ${index + 1}`; return <button key={category._id ?? category.id ?? name} type="button" onClick={() => onSelect?.(name)} className={`rounded-full px-4 py-2 text-sm font-medium transition ${selected === name ? "bg-primary text-white dark:bg-accent dark:text-accent-foreground" : "bg-surface-secondary text-foreground-secondary hover:bg-surface-secondary  "}`}>{name}</button>; })}</div>;
+}

@@ -1,0 +1,97 @@
+:root {
+  color-scheme: light;
+
+  --background: #F7F8F4;
+  --surface: #FFFFFF;
+  --surface-secondary: #EFF2EB;
+
+  --foreground: #14211C;
+  --foreground-secondary: #5B6B63;
+
+  --brand: #1D4B3C;
+  --brand-secondary: #4C7A64;
+  --brand-strong: #14382C;
+  --brand-strong-foreground: #F7FAF5;
+  --accent: #D9EE8C;
+  --accent-foreground: #1A2A1F;
+  --muted-gold: #C7B27E;
+
+  --primary: #1D4B3C;
+  --primary-foreground: #FBFCF8;
+
+  --border: #E0E5DB;
+  --input: #DDE3D8;
+  --ring: #4C7A64;
+
+  --success: #1F7A52;
+  --warning: #B57A1F;
+  --danger: #C0453F;
+
+  --shadow: 0 1px 2px rgb(20 33 28 / 4%), 0 12px 32px -16px rgb(20 33 28 / 18%);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: #111A17;
+  --surface: #1B2622;
+  --surface-secondary: #25322C;
+
+  --foreground: #F2F4EE;
+  --foreground-secondary: #A9B6AE;
+
+  --brand: #9CC4AE;
+  --brand-secondary: #7FAE96;
+  --brand-strong: #0F2F24;
+  --brand-strong-foreground: #F7FAF5;
+  --accent: #D5ED83;
+  --accent-foreground: #172522;
+  --muted-gold: #D7C9A8;
+
+  --primary: #D5ED83;
+  --primary-foreground: #172522;
+
+  --border: #33423A;
+  --input: #33423A;
+  --ring: #9CC4AE;
+
+  --success: #68CE98;
+  --warning: #E8B95F;
+  --danger: #F17C7C;
+
+  --shadow: 0 1px 2px rgb(0 0 0 / 20%), 0 16px 40px -20px rgb(0 0 0 / 55%);
+}
+
+.light {
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-secondary: var(--surface-secondary);
+
+  --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+
+  --color-brand: var(--brand);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-strong-foreground: var(--brand-strong-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted-gold: var(--muted-gold);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --font-sans: "Inter", sans-serif;
+}
