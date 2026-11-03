@@ -23,7 +23,12 @@ const getToken = (response) => {
   let value = response;
   const visited = new Set();
 
-  while (value && typeof value === "object" && !Array.isArray(value) && !visited.has(value)) {
+  while (
+    value &&
+    typeof value === "object" &&
+    !Array.isArray(value) &&
+    !visited.has(value)
+  ) {
     visited.add(value);
     if (typeof value.accessToken === "string") return value.accessToken;
     if (typeof value.token === "string") return value.token;
@@ -45,7 +50,7 @@ export function AuthProvider({ children }) {
     setAuthError(null);
 
     try {
-      const response = await getCurrentUser();
+      const refreshResponse = await refreshAccessToken();
       const currentUser = getUser(response);
       setUser(currentUser);
       return currentUser;
@@ -85,57 +90,66 @@ export function AuthProvider({ children }) {
     checkAuth();
   }, [checkAuth]);
 
-  const login = useCallback(async (credentials, remember = false) => {
-    setAuthError(null);
-    const response = await loginUser(credentials);
-    queryClient.clear();
-    const accessToken = getToken(response);
-
-    if (accessToken) {
-      setAccessToken(accessToken, remember);
-    }
-
-    let authenticatedUser = getUser(response);
-
-    if (!authenticatedUser) {
-      const currentUserResponse = await getCurrentUser();
-      authenticatedUser = getUser(currentUserResponse);
-    }
-
-    setUser(authenticatedUser);
-    return response;
-  }, [queryClient]);
-
-  const register = useCallback(async (userData) => {
-    setAuthError(null);
-    const response = await registerUser(userData);
-
-    const accessToken = getToken(response);
-    if (accessToken) {
-      setAccessToken(accessToken);
+  const login = useCallback(
+    async (credentials, remember = false) => {
+      setAuthError(null);
+      const response = await loginUser(credentials);
       queryClient.clear();
-      setUser(getUser(response));
-    }
+      const accessToken = getToken(response);
 
-    return response;
-  }, [queryClient]);
+      if (accessToken) {
+        setAccessToken(accessToken, remember);
+      }
+
+      let authenticatedUser = getUser(response);
+
+      if (!authenticatedUser) {
+        const currentUserResponse = await getCurrentUser();
+        authenticatedUser = getUser(currentUserResponse);
+      }
+
+      setUser(authenticatedUser);
+      return response;
+    },
+    [queryClient],
+  );
+
+  const register = useCallback(
+    async (userData) => {
+      setAuthError(null);
+      const response = await registerUser(userData);
+
+      const accessToken = getToken(response);
+      if (accessToken) {
+        setAccessToken(accessToken);
+        queryClient.clear();
+        setUser(getUser(response));
+      }
+
+      return response;
+    },
+    [queryClient],
+  );
 
   const activate = useCallback(async (activationData) => {
     setAuthError(null);
     return activateUser(activationData);
   }, []);
 
-  const socialLogin = useCallback(async (userData) => {
-    setAuthError(null);
-    const response = await socialAuthUser(userData);
-    queryClient.clear();
-    const accessToken = getToken(response);
+  const socialLogin = useCallback(
+    async (userData) => {
+      setAuthError(null);
+      const response = await socialAuthUser(userData);
+      queryClient.clear();
+      const accessToken = getToken(response);
 
-    if (accessToken) setAccessToken(accessToken, true);
+      if (accessToken) setAccessToken(accessToken, true);
 
-    setUser(getUser(response));
-    return response;
-  }, [queryClient]);
+      setUser(getUser(response));
+      return response;
+    },
+    [queryClient],
+  );
 
   const logout = useCallback(async () => {
     try {
@@ -163,7 +177,17 @@ export function AuthProvider({ children }) {
       refetchUser: checkAuth,
       setUser,
     }),
-    [user, isLoading, authError, login, register, activate, socialLogin, logout, checkAuth],
+    [
+      user,
+      isLoading,
+      authError,
+      login,
+      register,
+      activate,
+      socialLogin,
+      logout,
+      checkAuth,
+    ],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
