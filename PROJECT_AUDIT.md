@@ -1,46 +1,131 @@
-# LearnHub - consolidated source update
+# LearnHubAI - Project Audit
 
-## Applied changes
+## 1. Purpose
 
-- Corrected the marketplace page import to match the actual `Marketplace.jsx` filename.
-- Corrected the mobile navigation theme-toggle import.
-- Reworked route registration to lazy-load page modules and added a shared page-loading fallback.
-- Registered protected admin user management at `/admin/users` and exposed it in the admin sidebar.
-- Added a profile overview at `/profile` using the authenticated session user object.
-- Reworked the admin dashboard to show totals returned by the existing admin users and admin courses APIs.
-- Made marketplace search handle both string and array course tags.
-- Added a password recovery information page because the current verified backend contract does not provide a confirmed reset flow.
-- Replaced the template README with project setup, scripts, architecture, and API notes.
-- Cleaned `.env.example` so it contains only the API base URL.
+This document tracks technical issues, bugs, architectural weaknesses, and improvements in LearnHubAI.
 
-## Existing working areas retained
+## 2. Authentication Audit
 
-The existing authentication, marketplace, student learning, instructor course and lecture workflows, instructor analytics, admin course management, and admin user management source files were retained. Existing API endpoint paths and payloads were not changed as part of this update.
+Check:
 
-## Backend-dependent features not enabled
+- Login request and response.
+- Registration and activation.
+- Access-token storage.
+- Refresh-token handling.
+- Axios request interceptors.
+- Axios response interceptors.
+- Current-user API.
+- Logout behavior.
+- Session restoration after page refresh.
 
-The uploaded project and the verified API details available for this task do not provide enough contract information to safely implement these features end-to-end:
+Known observations:
 
-- Payment checkout and Stripe payment confirmation
-- Coupon creation and redemption
-- Homepage settings and notifications
+- The current user request has returned HTTP 401.
+- The refresh-token request has returned HTTP 400.
 
-These need the exact endpoint paths, request schemas, response schemas, and any external provider configuration. No guessed API routes or request fields have been added.
+These errors must be investigated against the actual backend contract.
 
-## Recently completed features
+## 3. API Audit
 
-The following features have been implemented based on existing API contracts in the codebase:
+Verify:
 
-- **Forgot Password** - Users can submit their email to request a password reset link
-- **Reset Password** - Users can set a new password using a token from the reset email
-- **Profile Editing** - Users can edit their name and email
-- **Password Change** - Users can change their password from the profile page
-- **Profile Picture Upload** - Users can upload a new profile picture
-- **Refund Management** - Admin can process refunds for completed orders
-- **Category Creation** - Admin can create new course categories (in addition to edit/delete)
+- Correct API base URL.
+- Correct endpoint paths.
+- Correct HTTP methods.
+- Request payload structures.
+- Authorization headers.
+- Cookie handling.
+- CORS configuration.
+- Error responses.
+- Loading and error states.
 
-## Validation status
+Avoid treating HTTP 304 responses as failures without checking the cached response behavior.
 
-- Relative source imports were checked after the changes; all resolve to existing files.
-- The ZIP archive is validated for integrity.
-- `npm run lint` and `npm run build` could not be executed in this environment because dependency installation (`npm ci`) timed out and left the local dependency binaries unavailable. Run both commands after extracting the archive and installing dependencies locally.
+## 4. Student Module Audit
+
+Verify:
+
+- Course catalogue.
+- Course details.
+- Wishlist.
+- Payment.
+- Purchased courses.
+- Enrollment.
+- Learning progress.
+
+Important:
+A successful payment must be verified by the backend before a course is treated as purchased.
+
+## 5. Instructor Module Audit
+
+Verify:
+
+- Course creation.
+- Course updates.
+- Course deletion permissions.
+- Course content management.
+- Student enrollment information.
+- Dashboard statistics.
+
+## 6. Admin Module Audit
+
+Verify:
+
+- Dashboard statistics.
+- User management.
+- Instructor management.
+- Course management.
+- Enrollment management.
+- Order management.
+- Refund management.
+
+Known issue:
+Enrollment, order, course management, and refund data have previously required additional debugging.
+
+## 7. UI and UX Audit
+
+Verify:
+
+- Responsive navigation.
+- Dashboard sidebar positioning.
+- Independent content scrolling.
+- Form validation.
+- Table overflow.
+- Loading states.
+- Empty states.
+- Error messages.
+- Mobile layouts.
+
+## 8. Performance Audit
+
+Check:
+
+- Unnecessary API calls.
+- Duplicate requests.
+- Component re-rendering.
+- Image optimization.
+- Lazy loading.
+- Bundle size.
+- Memory leaks.
+
+## 9. Security Audit
+
+Check:
+
+- Authorization enforcement.
+- Sensitive information exposure.
+- Token handling.
+- Input validation.
+- Payment verification.
+- API permissions.
+
+## 10. Audit Completion
+
+Record every issue with:
+
+- Issue description.
+- Affected file.
+- Root cause.
+- Fix applied.
+- Testing result.
+- Completion date.
