@@ -27,6 +27,7 @@ export const config = {
   isProduction,
   port: Number(process.env.PORT || 5050),
   mongoUri: process.env.MONGODB_URI,
+  mongoDb: process.env.MONGODB_DB || "",
   accessTokenSecret:
     process.env.ACCESS_TOKEN_SECRET || "learnhub-dev-access-secret-change-me",
   refreshTokenSecret:
@@ -36,4 +37,5 @@ export const config = {
   refreshTokenTtlMs: 7 * 24 * 60 * 60 * 1000,
   clientOrigins,
   exposeResetToken: process.env.EXPOSE_RESET_TOKEN === "true",
+  seedOnStart: process.env.SEED_ON_START === "true",
 };

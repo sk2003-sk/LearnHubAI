@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { pathToFileURL } from "node:url";
 import { connectDatabase } from "./db.js";
 import { Category, Course, Lecture, Section } from "./models/Course.js";
 import { Enrollment, LectureProgress } from "./models/Learning.js";
@@ -54,8 +55,8 @@ async function upsertUser({ name, email, password, role }) {
   return user;
 }
 
-async function seed() {
-  await connectDatabase();
+async function seed({ connect = true, disconnect = true } = {}) {
+  if (connect) await connectDatabase();
 
   if (force) {
     await Promise.all([
@@ -337,11 +338,18 @@ async function seed() {
   console.log("  instructor instructor@learnhub.dev / Instructor@123");
   console.log("  student    student@learnhub.dev / Student@123");
 
-  await mongoose.disconnect();
+  if (disconnect) await mongoose.disconnect();
 }
 
-seed().catch(async (error) => {
-  console.error("[seed] failed", error);
-  await mongoose.disconnect();
-  process.exit(1);
-});
+export { seed };
+
+const isDirectRun =
+  process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (isDirectRun) {
+  seed().catch(async (error) => {
+    console.error("[seed] failed", error);
+    if (mongoose.connection.readyState !== 0) await mongoose.disconnect();
+    process.exit(1);
+  });
+}
