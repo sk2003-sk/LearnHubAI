@@ -29,3 +29,16 @@ services:
         value: https://learn-hub-ai-alpha.vercel.app
       - key: EXPOSE_RESET_TOKEN
         value: "false"
+  - type: web
+    name: learnhub-web
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    autoDeploy: true
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://learnhub-api-lidi.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
