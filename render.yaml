@@ -26,7 +26,7 @@ services:
       - key: REFRESH_TOKEN_SECRET
         generateValue: true
       - key: CLIENT_URL
-        value: https://learn-hub-ai-alpha.vercel.app
+        value: https://learn-hub-ai-alpha.vercel.app,https://learnhub-web-gak4.onrender.com
       - key: EXPOSE_RESET_TOKEN
         value: "false"
   - type: web
