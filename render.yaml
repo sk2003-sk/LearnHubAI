@@ -13,7 +13,10 @@ services:
       - key: NODE_ENV
         value: production
       - key: MONGODB_URI
-        sync: false
+        fromService:
+          type: web
+          name: spark-beauty-server
+          envVarKey: MONGO_URI
       - key: MONGODB_DB
         value: learnhub
       - key: SEED_ON_START
