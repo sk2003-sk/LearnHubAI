@@ -51,6 +51,13 @@ export function AuthProvider({ children }) {
 
     try {
       const refreshResponse = await refreshAccessToken();
+      const refreshedToken = getToken(refreshResponse);
+
+      if (refreshedToken) {
+        setAccessToken(refreshedToken, shouldRememberSession());
+      }
+
+      const response = await getCurrentUser();
       const currentUser = getUser(response);
       setUser(currentUser);
       return currentUser;
@@ -58,27 +65,12 @@ export function AuthProvider({ children }) {
       if (![400, 401].includes(error.status)) {
         setUser(null);
         setAuthError(error.message || "Unable to verify your session.");
-        setIsLoading(false);
         return null;
       }
 
-      try {
-        const refreshResponse = await refreshAccessToken();
-        const refreshedToken = getToken(refreshResponse);
-
-        if (refreshedToken) {
-          setAccessToken(refreshedToken, shouldRememberSession());
-        }
-
-        const response = await getCurrentUser();
-        const currentUser = getUser(response);
-        setUser(currentUser);
-        return currentUser;
-      } catch {
-        clearAccessToken();
-        setUser(null);
-        return null;
-      }
+      clearAccessToken();
+      setUser(null);
+      return null;
     } finally {
       setIsLoading(false);
     }
